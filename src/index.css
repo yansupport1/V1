@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-accent: #25d366;
+  --color-accent-soft: rgba(37, 211, 102, 0.12);
+  --color-surface: #ffffff;
+  --color-surface-2: #f0f2f5;
+  --color-border: #e4e6eb;
+  --color-muted: #667781;
+  --color-bubble: #ffffff;
+  --color-bubble-out: #d9fdd3;
+  --color-bg: #efeae2;
+  --color-text: #111b21;
+  --color-nav: #ffffff;
+}
+
+.dark {
+  --color-surface: #111b21;
+  --color-surface-2: #1f2c34;
+  --color-border: #2a3942;
+  --color-muted: #8696a0;
+  --color-bubble: #202c33;
+  --color-bubble-out: #005c4b;
+  --color-bg: #0b141a;
+  --color-text: #e9edef;
+  --color-nav: #111b21;
+}
+
+/* Theme: Default (WhatsApp-like) */
+[data-theme='default'] {
+  --color-accent: #25d366;
+  --color-accent-soft: rgba(37, 211, 102, 0.15);
+  --color-bubble-out: #d9fdd3;
+}
+.dark[data-theme='default'] {
+  --color-bubble-out: #005c4b;
+}
+
+/* Theme: Soft Red */
+[data-theme='soft-red'] {
+  --color-accent: #e87070;
+  --color-accent-soft: rgba(232, 112, 112, 0.14);
+  --color-bubble-out: #fde8e8;
+}
+.dark[data-theme='soft-red'] {
+  --color-bubble-out: #5c2a2a;
+  --color-accent: #f09090;
+}
+
+/* Theme: Soft Cyan */
+[data-theme='soft-cyan'] {
+  --color-accent: #22d3ee;
+  --color-accent-soft: rgba(34, 211, 238, 0.14);
+  --color-bubble-out: #e0f7fa;
+}
+.dark[data-theme='soft-cyan'] {
+  --color-bubble-out: #0e4a54;
+  --color-accent: #67e8f9;
+}
+
+/* Theme: Soft Green */
+[data-theme='soft-green'] {
+  --color-accent: #4ade80;
+  --color-accent-soft: rgba(74, 222, 128, 0.14);
+  --color-bubble-out: #e8f8ee;
+}
+.dark[data-theme='soft-green'] {
+  --color-bubble-out: #1a4d33;
+  --color-accent: #86efac;
+}
+
+/* Theme: Glassmorph */
+[data-theme='glassmorph'] {
+  --color-accent: #6366f1;
+  --color-accent-soft: rgba(99, 102, 241, 0.15);
+  --color-surface: rgba(255, 255, 255, 0.72);
+  --color-surface-2: rgba(255, 255, 255, 0.45);
+  --color-border: rgba(255, 255, 255, 0.35);
+  --color-bubble: rgba(255, 255, 255, 0.85);
+  --color-bubble-out: rgba(99, 102, 241, 0.18);
+  --color-bg: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 50%, #e0f2fe 100%);
+  --color-nav: rgba(255, 255, 255, 0.65);
+}
+.dark[data-theme='glassmorph'] {
+  --color-surface: rgba(15, 23, 42, 0.75);
+  --color-surface-2: rgba(30, 41, 59, 0.55);
+  --color-border: rgba(148, 163, 184, 0.2);
+  --color-bubble: rgba(30, 41, 59, 0.8);
+  --color-bubble-out: rgba(99, 102, 241, 0.35);
+  --color-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  --color-nav: rgba(15, 23, 42, 0.7);
+  --color-text: #f1f5f9;
+  --color-muted: #94a3b8;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: var(--color-bg);
+  background-attachment: fixed;
+  color: var(--color-text);
+  overflow: hidden;
+}
+
+/* Glass helpers */
+.glass {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+}
+
+.glass-nav {
+  background: var(--color-nav);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Message bubble */
+.msg-in {
+  background: var(--color-bubble);
+  border-radius: 0 12px 12px 12px;
+}
+.msg-out {
+  background: var(--color-bubble-out);
+  border-radius: 12px 0 12px 12px;
+}
+
+/* Skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-2) 25%,
+    var(--color-border) 50%,
+    var(--color-surface-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+
+/* Safe area for mobile */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
