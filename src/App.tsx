@@ -16,6 +16,7 @@ import { CallsPage } from './pages/CallsPage';
 import { CommunitiesPage } from './pages/CommunitiesPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AppearancePage } from './pages/AppearancePage';
+import { JoinPage } from './pages/JoinPage';
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = useThemeStore((s) => s.theme);
@@ -90,6 +91,7 @@ export default function App() {
               <Route path="settings/appearance" element={<AppearancePage />} />
             </Route>
             <Route path="chat/:convId" element={<ChatRoomPage />} />
+            <Route path="join/:code" element={<JoinPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AuthGate>

@@ -8,7 +8,7 @@ export function AppShell() {
   const hideNav = hideNavPaths.some((p) => pathname.startsWith(p));
 
   return (
-    <div className="h-full flex flex-col max-w-lg mx-auto relative bg-[var(--color-bg)]">
+    <div className="h-full max-h-[100dvh] flex flex-col max-w-lg mx-auto relative bg-[var(--color-bg)] overflow-hidden">
       <main className="flex-1 overflow-hidden">
         <Outlet />
       </main>

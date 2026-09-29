@@ -21,6 +21,7 @@ import {
 import { auth, db } from '../lib/firebase';
 import type { UserProfile, PrivacySettings } from '../types';
 import { validateUsername, generateId } from '../lib/utils';
+import { welcomeNewUser } from './aiSupport';
 
 const DEFAULT_PRIVACY: PrivacySettings = {
   lastSeen: 'everyone',
@@ -56,7 +57,6 @@ export async function registerWithUsername(
     uid,
     username: usernameLower,
     displayName: displayName.trim() || usernameLower,
-    phone: phone?.trim() || undefined,
     photoURL: '',
     bio: '',
     isOnline: true,
@@ -65,11 +65,22 @@ export async function registerWithUsername(
     updatedAt: Date.now(),
     privacy: DEFAULT_PRIVACY,
   };
+  const phoneTrim = phone?.trim();
+  if (phoneTrim) profile.phone = phoneTrim;
 
-  await set(ref(db, `users/${uid}`), profile);
+  // Firebase RTDB rejects undefined — strip before write
+  const clean = JSON.parse(JSON.stringify(profile)) as UserProfile;
+  await set(ref(db, `users/${uid}`), clean);
   await set(ref(db, `usernames/${usernameLower}`), { uid, createdAt: Date.now() });
 
-  return profile;
+  // sapaan AI Support untuk user baru
+  try {
+    await welcomeNewUser(clean);
+  } catch (e) {
+    console.warn("AI welcome failed", e);
+  }
+
+  return clean;
 }
 
 export async function loginWithUsername(username: string, password: string): Promise<User> {
@@ -105,7 +116,11 @@ export function subscribeUserProfile(uid: string, cb: (p: UserProfile | null) =>
 }
 
 export async function updateUserProfile(uid: string, data: Partial<UserProfile>) {
-  const payload = { ...data, updatedAt: Date.now() };
+  const payload: Record<string, unknown> = { ...data, updatedAt: Date.now() };
+  // Firebase RTDB rejects undefined values
+  Object.keys(payload).forEach((k) => {
+    if (payload[k] === undefined) delete payload[k];
+  });
   await update(ref(db, `users/${uid}`), payload);
   if (data.displayName && auth.currentUser) {
     await updateProfile(auth.currentUser, { displayName: data.displayName });
